@@ -4,8 +4,11 @@ using TMPro;
 public class FlightExamManager : MonoBehaviour
 {
     [SerializeField] private TMP_Text hudText;
+    [SerializeField] private TMP_Text healthText;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private GameObject spacecraft;
+    [SerializeField] private AircraftHealth aircraftHealth;
+    [SerializeField] private AsteroidSpawner asteroidSpawner;
 
     [SerializeField] private string startMessage = "Reach the destination hangar!";
     [SerializeField] private string dangerMessage = "Entered a Dangerous Zone!";
@@ -45,12 +48,25 @@ public class FlightExamManager : MonoBehaviour
 
     public void ExitDangerZone()
     {
-        if (missionComplete || !hasEnteredDangerZone) return;
+    if (missionComplete || !hasEnteredDangerZone) return;
 
-        missileCountdownActive = false;
-        missileActive = false;
-        dangerPhaseCleared = true;
-        hudText.text = safeMessage;
+    missileCountdownActive = false;
+    missileActive = false;
+    dangerPhaseCleared = true;
+
+    asteroidSpawner.DestroyAllAsteroids();
+
+    hudText.text = safeMessage;
+    }
+
+    public void SetAsteroidCountdownActive(bool isActive)
+    {
+        missileCountdownActive = isActive;
+    }
+
+    public void SetAsteroidActive(bool isActive)
+    {
+        missileActive = isActive;
     }
 
     public void OnReachDestination()
@@ -61,19 +77,35 @@ public class FlightExamManager : MonoBehaviour
         hudText.text = successMessage;
     }
 
+    public void UpdateHealthHUD(int currentHealth)
+    {
+        hudText.text = "Hull Integrity: " + currentHealth;
+    }
+
+    public void FailMission()
+    {
+        hudText.text = "Mission Failed!\nSpacecraft destroyed.";
+        Invoke(nameof(RestartMission), 2f);
+    }
+
     public void RestartMission()
     {
-        hasEnteredDangerZone = false;
-        missileCountdownActive = false;
-        missileActive = false;
-        dangerPhaseCleared = false;
-        missionComplete = false;
+    hasEnteredDangerZone = false;
+    missileCountdownActive = false;
+    missileActive = false;
+    dangerPhaseCleared = false;
+    missionComplete = false;
 
-        rb.linearVelocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
-        spacecraft.transform.position = spawnPoint.position;
-        spacecraft.transform.rotation = spawnPoint.rotation;
+    rb.linearVelocity = Vector3.zero;
+    rb.angularVelocity = Vector3.zero;
 
-        hudText.text = startMessage;
+    spacecraft.transform.position = spawnPoint.position;
+    spacecraft.transform.rotation = spawnPoint.rotation;
+
+    aircraftHealth.ResetHealth();
+    asteroidSpawner.DestroyAllAsteroids();
+
+    hudText.text = startMessage;
+    healthText.text = "Hull Integrity: 100";
     }
 }

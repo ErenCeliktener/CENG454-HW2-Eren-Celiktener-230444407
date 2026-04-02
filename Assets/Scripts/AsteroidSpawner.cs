@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AsteroidSpawner : MonoBehaviour
@@ -5,6 +6,8 @@ public class AsteroidSpawner : MonoBehaviour
     [SerializeField] private GameObject asteroidPrefab;
     [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private Transform playerTarget;
+
+    private List<GameObject> activeAsteroids = new List<GameObject>();
 
     public void SpawnAsteroids()
     {
@@ -17,6 +20,20 @@ public class AsteroidSpawner : MonoBehaviour
             );
 
             asteroid.GetComponent<AsteroidHoming>().SetTarget(playerTarget);
+            activeAsteroids.Add(asteroid);
         }
+    }
+
+    public void DestroyAllAsteroids()
+    {
+        for (int i = 0; i < activeAsteroids.Count; i++)
+        {
+            if (activeAsteroids[i] != null)
+            {
+                Destroy(activeAsteroids[i]);
+            }
+        }
+
+        activeAsteroids.Clear();
     }
 }
