@@ -9,6 +9,10 @@ public class FlightExamManager : MonoBehaviour
     [SerializeField] private GameObject spacecraft;
     [SerializeField] private AircraftHealth aircraftHealth;
     [SerializeField] private AsteroidSpawner asteroidSpawner;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip dangerZoneClip;
+    [SerializeField] private AudioClip asteroidHitClip;
+    [SerializeField] private AudioClip victoryClip;
 
     [SerializeField] private string startMessage = "Reach the destination hangar!";
     [SerializeField] private string dangerMessage = "Entered a Dangerous Zone!";
@@ -44,6 +48,7 @@ public class FlightExamManager : MonoBehaviour
         hasEnteredDangerZone = true;
         missileCountdownActive = true;
         hudText.text = dangerMessage;
+        PlayDangerZoneSound();
     }
 
     public void ExitDangerZone()
@@ -57,6 +62,8 @@ public class FlightExamManager : MonoBehaviour
     asteroidSpawner.DestroyAllAsteroids();
 
     hudText.text = safeMessage;
+    audioSource.Stop();
+    PlayVictorySound();
     }
 
     public void SetAsteroidCountdownActive(bool isActive)
@@ -80,11 +87,13 @@ public class FlightExamManager : MonoBehaviour
     public void UpdateHealthHUD(int currentHealth)
     {
         hudText.text = "Hull Integrity: " + currentHealth;
+        PlayAsteroidHitSound();
     }
 
     public void FailMission()
     {
         hudText.text = "Mission Failed!\nSpacecraft destroyed.";
+        PlayAsteroidHitSound();
         Invoke(nameof(RestartMission), 2f);
     }
 
@@ -107,5 +116,19 @@ public class FlightExamManager : MonoBehaviour
 
     hudText.text = startMessage;
     healthText.text = "Hull Integrity: 100";
+    }
+    public void PlayDangerZoneSound()
+    {
+        audioSource.PlayOneShot(dangerZoneClip);
+    }
+
+    public void PlayAsteroidHitSound()
+    {
+        audioSource.PlayOneShot(asteroidHitClip);
+    }
+
+    public void PlayVictorySound()
+    {
+        audioSource.PlayOneShot(victoryClip);
     }
 }
