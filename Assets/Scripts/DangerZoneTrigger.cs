@@ -7,6 +7,7 @@ public class DangerZoneTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        // Notify the mission manager when the player enters the danger zone
         if (!other.CompareTag("Player")) return;
 
         examManager.EnterDangerZone();
@@ -14,6 +15,7 @@ public class DangerZoneTrigger : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        // Notify the mission manager when the player leaves the danger zone
         if (!other.CompareTag("Player")) return;
 
         examManager.ExitDangerZone();

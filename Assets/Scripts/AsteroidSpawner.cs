@@ -11,6 +11,7 @@ public class AsteroidSpawner : MonoBehaviour
 
     public void SpawnAsteroids()
     {
+        // Spawn an asteroid at each spawn point and set the player as the target
         for (int i = 0; i < spawnPoints.Length; i++)
         {
             GameObject asteroid = Instantiate(
@@ -26,6 +27,7 @@ public class AsteroidSpawner : MonoBehaviour
 
     public void DestroyAllAsteroids()
     {
+        // Destroy all active asteroids in the scene
         for (int i = 0; i < activeAsteroids.Count; i++)
         {
             if (activeAsteroids[i] != null)

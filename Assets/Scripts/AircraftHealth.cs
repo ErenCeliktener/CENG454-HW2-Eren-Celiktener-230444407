@@ -10,23 +10,23 @@ public class AircraftHealth : MonoBehaviour
 
     private void Start()
     {
-        currentHealth = maxHealth;
+        currentHealth = maxHealth; // Set the spacecraft health to maximum at the start
     }
 
     public void TakeDamage()
     {
-        currentHealth -= hitDamage;
+        currentHealth -= hitDamage;  // Reduce health when hit by an asteroid
 
         if (currentHealth < 0)
         {
             currentHealth = 0;
         }
 
-        examManager.UpdateHealthHUD(currentHealth);
+        examManager.UpdateHealthHUD(currentHealth); // Update the health display on the HUD
 
-        if (currentHealth <= 0)
+        if (currentHealth <= 0) 
         {
-            examManager.FailMission();
+            examManager.FailMission(); // Fail the mission if health reaches zero
         }
     }
 
