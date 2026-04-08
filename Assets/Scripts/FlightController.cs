@@ -1,5 +1,5 @@
 // FlightController.cs
-// CENG 454 – HW1: Sky-High Prototype
+// CENG 454 – HW2: Sky-High Prototype2
 // Author: Eren Celiktener | Student ID: 230444407
 using UnityEngine;
 public class FlightController : MonoBehaviour
