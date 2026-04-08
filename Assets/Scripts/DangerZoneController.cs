@@ -1,3 +1,4 @@
+// DangerZoneController.cs
 using System.Collections;
 using UnityEngine;
 
@@ -15,6 +16,17 @@ public class DangerZoneController : MonoBehaviour
         if (countdownCoroutine == null)
         {
             countdownCoroutine = StartCoroutine(SpawnCountdown());
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (!other.CompareTag("Player")) return;
+
+        if (countdownCoroutine != null)
+        {
+            StopCoroutine(countdownCoroutine);
+            countdownCoroutine = null;
         }
     }
 

@@ -6,6 +6,7 @@ public class LandingAreaTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        // Complete the mission when the player reaches the landing area
         if (!other.CompareTag("Player")) return;
 
         examManager.OnReachDestination();

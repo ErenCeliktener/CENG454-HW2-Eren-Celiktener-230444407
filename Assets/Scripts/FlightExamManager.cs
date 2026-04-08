@@ -1,3 +1,4 @@
+// FlightExamManager.cs
 using UnityEngine;
 using TMPro;
 
@@ -43,27 +44,29 @@ public class FlightExamManager : MonoBehaviour
 
     public void EnterDangerZone()
     {
-        if (missionComplete || dangerPhaseCleared || hasEnteredDangerZone) return;
+        if (missionComplete || hasEnteredDangerZone) return;
 
         hasEnteredDangerZone = true;
         missileCountdownActive = true;
+        dangerPhaseCleared = false;
         hudText.text = dangerMessage;
         PlayDangerZoneSound();
     }
 
     public void ExitDangerZone()
     {
-    if (missionComplete || !hasEnteredDangerZone) return;
+        if (missionComplete || !hasEnteredDangerZone) return;
 
-    missileCountdownActive = false;
-    missileActive = false;
-    dangerPhaseCleared = true;
+        hasEnteredDangerZone = false;
+        missileCountdownActive = false;
+        missileActive = false;
+        dangerPhaseCleared = true;
 
-    asteroidSpawner.DestroyAllAsteroids();
+        asteroidSpawner.DestroyAllAsteroids();
 
-    hudText.text = safeMessage;
-    audioSource.Stop();
-    PlayVictorySound();
+        hudText.text = safeMessage;
+        audioSource.Stop();
+        PlayVictorySound();
     }
 
     public void SetAsteroidCountdownActive(bool isActive)
@@ -86,7 +89,7 @@ public class FlightExamManager : MonoBehaviour
 
     public void UpdateHealthHUD(int currentHealth)
     {
-        hudText.text = "Hull Integrity: " + currentHealth;
+        healthText.text = "Hull Integrity: " + currentHealth;
         PlayAsteroidHitSound();
     }
 
@@ -99,24 +102,25 @@ public class FlightExamManager : MonoBehaviour
 
     public void RestartMission()
     {
-    hasEnteredDangerZone = false;
-    missileCountdownActive = false;
-    missileActive = false;
-    dangerPhaseCleared = false;
-    missionComplete = false;
+        hasEnteredDangerZone = false;
+        missileCountdownActive = false;
+        missileActive = false;
+        dangerPhaseCleared = false;
+        missionComplete = false;
 
-    rb.linearVelocity = Vector3.zero;
-    rb.angularVelocity = Vector3.zero;
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
 
-    spacecraft.transform.position = spawnPoint.position;
-    spacecraft.transform.rotation = spawnPoint.rotation;
+        spacecraft.transform.position = spawnPoint.position;
+        spacecraft.transform.rotation = spawnPoint.rotation;
 
-    aircraftHealth.ResetHealth();
-    asteroidSpawner.DestroyAllAsteroids();
+        aircraftHealth.ResetHealth();
+        asteroidSpawner.DestroyAllAsteroids();
 
-    hudText.text = startMessage;
-    healthText.text = "Hull Integrity: 100";
+        hudText.text = startMessage;
+        healthText.text = "Hull Integrity: 100";
     }
+
     public void PlayDangerZoneSound()
     {
         audioSource.PlayOneShot(dangerZoneClip);

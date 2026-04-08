@@ -1,3 +1,4 @@
+// DangerZoneTrigger.cs
 using UnityEngine;
 
 public class DangerZoneTrigger : MonoBehaviour
